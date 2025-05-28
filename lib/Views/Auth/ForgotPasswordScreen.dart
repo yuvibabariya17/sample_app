@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sample_app/Controllers/ForgotPasswordController.dart';
-import 'package:sample_app/Views/LoginScreen.dart';
+import 'package:sample_app/Views/Auth/LoginScreen.dart';
 import 'package:sizer/sizer.dart';
 
 class ForgotPassword extends StatefulWidget {

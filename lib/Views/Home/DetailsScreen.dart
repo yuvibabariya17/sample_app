@@ -32,7 +32,9 @@ class DetailScreen extends StatelessWidget {
               data.name,
               style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w500),
             ),
-            SizedBox(height: 2.h),
+            SizedBox(
+              height: 2.h,
+            ),
             Text(
               data.id.toString(),
               style: TextStyle(fontSize: 12.sp),

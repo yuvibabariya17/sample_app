@@ -1,20 +1,23 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:sample_app/Controllers/LoginScreenController.dart';
-import 'package:sample_app/Views/HomeScreen.dart';
-import 'package:sample_app/Views/PhoneNumber.dart';
+import 'package:sample_app/Controllers/SignUpController.dart';
+import 'package:sample_app/Views/Home/HomeScreen.dart';
+import 'package:sample_app/Common/UiHelper.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
 import 'package:http/http.dart' as http;
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
 //API CALLL
@@ -27,7 +30,7 @@ void login(String email, password) async {
     });
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body.toString());
-      Get.to(HomeScreen());
+      Get.to(const HomeScreen());
       print(data.toString());
       print("Account created successfully");
     } else {
@@ -38,8 +41,23 @@ void login(String email, password) async {
   }
 }
 
-class _LoginScreenState extends State<LoginScreen> {
-  final controller = Get.put(LoginScreenController());
+class _SignUpScreenState extends State<SignUpScreen> {
+  final controller = Get.put(SignUpScreenController());
+
+  signUp(String email, String password) async {
+    if (email == "" && password == "") {
+      Uihelper.customAlertBox(context, "Enter Required Fields");
+    } else {
+      UserCredential? usercredential;
+      try {
+        usercredential = await FirebaseAuth.instance
+            .createUserWithEmailAndPassword(email: email, password: password)
+            .then((value) => Get.to(const HomeScreen()));
+      } on FirebaseAuthException catch (ex) {
+        return Uihelper.customAlertBox(context, ex.code.toString());
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
       resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
         child: Container(
-          margin: EdgeInsets.only(top: 12.h, right: 7.w, left: 7.w),
+          margin: EdgeInsets.only(top: 12.h, right: 7.w, left: 7.w), 
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -57,7 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   baseColor: Colors.grey.shade700,
                   highlightColor: Colors.grey.shade100,
                   child: Text(
-                    "Login Screen",
+                    "Sign Up",
                     style:
                         TextStyle(fontSize: 22.sp, fontWeight: FontWeight.w700),
                   ),
@@ -69,7 +87,7 @@ class _LoginScreenState extends State<LoginScreen> {
               Row(
                 children: [
                   Text(
-                    "Enter Login Details",
+                    "Enter SignUp Details",
                     style:
                         TextStyle(fontSize: 10.sp, fontWeight: FontWeight.w500),
                   ),
@@ -87,24 +105,16 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(
                 height: 1.h,
               ),
-              GestureDetector(
-                onTap: () {
-                  Get.to(const PhoneNumber());
-                },
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text("Forgot Password ?"),
-                  ],
-                ),
-              ),
+
               SizedBox(
                 height: 7.h,
               ),
               GestureDetector(
                 onTap: () {
-                  login(controller.emailCtr.text.toString(),
+                  signUp(controller.emailCtr.text.toString(),
                       controller.passCtr.text.toString());
+                  // login(controller.emailCtr.text.toString(),
+                  //     controller.passCtr.text.toString());
                 },
                 child: Container(
                   height: 6.h,
@@ -115,7 +125,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     color: Colors.blue,
                   ),
                   child: Text(
-                    "Login",
+                    "Sign Up",
                     style: TextStyle(color: Colors.white, fontSize: 14.sp),
                   ),
                 ),

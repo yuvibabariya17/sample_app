@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:sample_app/Views/DataScreen.dart';
+import 'package:sample_app/Views/Home/DataScreen.dart';
 import 'package:sizer/sizer.dart';
 
 class NewScreen extends StatelessWidget {

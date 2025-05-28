@@ -1,8 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:sample_app/Views/ForgotPasswordScreen.dart';
+import 'package:sample_app/Common/UiHelper.dart';
+import 'package:sample_app/Views/Auth/ForgotPasswordScreen.dart';
 import 'package:sizer/sizer.dart';
 
 class PhoneNumber extends StatefulWidget {
@@ -13,6 +15,16 @@ class PhoneNumber extends StatefulWidget {
 }
 
 class _PhoneNumberState extends State<PhoneNumber> {
+  TextEditingController emailCtr = TextEditingController();
+
+  forgotPassword(String email) async {
+    if (email == "") {
+      Uihelper.customAlertBox(context, "Enter an Email");
+    } else {
+      FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,15 +33,16 @@ class _PhoneNumberState extends State<PhoneNumber> {
       child: Column(
         children: [
           TextFormField(
+            controller: emailCtr,
             decoration: InputDecoration(
               errorText: "Enter Valid PhoneNUmber",
-              hintText: "Enter Phone Number",
+              hintText: "Enter Email",
               prefixIcon: Row(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Icon(
-                    Icons.call,
+                    Icons.mail,
                     // color: primaryColor,
                   ),
                   SizedBox(
@@ -50,18 +63,20 @@ class _PhoneNumberState extends State<PhoneNumber> {
           SizedBox(
             height: 5.h,
           ),
-          Container(
-            height: 6.h,
-            width: SizerUtil.width / 3,
-            decoration: BoxDecoration(
-              color: Colors.blue,
-              borderRadius: BorderRadius.circular(20),
+          GestureDetector(
+            onTap: () {
+              print("CLICKKK:::::");
+              forgotPassword(emailCtr.text.toString());
+            },
+            child: Container(
+              height: 6.h,
+              width: SizerUtil.width / 3,
+              decoration: BoxDecoration(
+                color: Colors.blue,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: const Center(child: Text("Reset Password")),
             ),
-            child: GestureDetector(
-                onTap: () {
-                  Get.to(ForgotPassword());
-                },
-                child: Center(child: Text("Next"))),
           )
         ],
       ),
