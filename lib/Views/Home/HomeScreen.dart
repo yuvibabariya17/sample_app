@@ -34,22 +34,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  // List<AddressModel> addressList = [];
-
-  // Future<List<AddressModel>> getAddressApi() async {
-  //   final response =
-  //       await http.get(Uri.parse("https://jsonplaceholder.typicode.com/users"));
-  //   if (response.statusCode == 200) {
-  //     var data = jsonDecode(response.body.toString());
-  //     addressList.clear();
-  //     for (var i in data) {
-  //       addressList.add(AddressModel.fromJson(i));
-  //     }
-  //     return addressList;
-  //   } else {
-  //     return addressList;
-  //   }
-  // }
 
   @override
   void initState() {
@@ -109,7 +93,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         onTap: () {
                           Get.to(DetailScreen(data: listData));
                         },
-                        child: Container(
+                        child: 
+                        
+                        Container(
                             margin: EdgeInsets.only(
                                 left: 2.w, right: 2.w, top: 2.h),
                             padding: EdgeInsets.only(
